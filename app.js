@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const jwt = require('jsonwebtoken');
 const { randomUUID } = require('crypto');
+const cors = require('cors');
 
 const { JWT_SECRET } = process.env;
 
@@ -11,6 +12,8 @@ const dynamoClient = require('./dynamo');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
 
 function auth(req, res, next) {
     const token = req.headers.authorization.split(' ')[1];
