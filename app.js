@@ -46,21 +46,23 @@ app.post('/todo', auth, async (req, res) => {
 });
 
 // edit a todo
-app.put('/todo/:id', async (req, res) => {
+app.put('/todo/:id', auth, async (req, res) => {
     const { text } = req.body;
     const { id } = req.params;
     const tableName = 'todos';
 
     const todo = {
         id,
-        text
+        text,
+        status: 'active',
+        userId: req.user.id,
     }
     await dynamoClient.saveItem(tableName, todo);
     res.send(todo);
 });
 
 // delete a todo
-app.delete('/todo/:id', async (req, res) => {
+app.delete('/todo/:id', auth, async (req, res) => {
     const tableName = 'todos';
     const { id } = req.params;
 
